@@ -1,36 +1,36 @@
-import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-  Box,
-  Chip,
-} from '@mui/material';
+import React from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { AppBar, Toolbar, Typography, Button, Box, Chip } from "@mui/material";
 import {
   Recycling as RecyclingIcon,
   Dashboard as DashboardIcon,
   AddCircle as AddCircleIcon,
   EmojiEvents as EmojiEventsIcon,
-} from '@mui/icons-material';
-import { useAuth } from '../contexts/AuthContext';
+} from "@mui/icons-material";
+import { useAuth } from "../contexts/AuthContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 
   return (
-    <AppBar 
-      position="fixed" 
-      sx={{ 
+    <AppBar
+      position="fixed"
+      sx={{
         zIndex: (theme) => theme.zIndex.drawer + 1,
-        background: 'linear-gradient(135deg, #2e7d32 0%, #388e3c 50%, #2e7d32 100%)',
-        boxShadow: '0 4px 20px rgba(46, 125, 50, 0.3)',
+        background:
+          "linear-gradient(135deg, #2e7d32 0%, #388e3c 50%, #2e7d32 100%)",
+        boxShadow: "0 4px 20px rgba(46, 125, 50, 0.3)",
       }}
     >
       <Toolbar>
-        <RecyclingIcon sx={{ mr: 2, fontSize: 32, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }} />
+        <RecyclingIcon
+          sx={{
+            mr: 2,
+            fontSize: 32,
+            filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
+          }}
+        />
         <Typography
           variant="h6"
           component={Link}
@@ -38,15 +38,15 @@ const Navbar = () => {
           sx={{
             flexGrow: 0,
             mr: 4,
-            textDecoration: 'none',
-            color: 'inherit',
-            fontWeight: 'bold',
+            textDecoration: "none",
+            color: "inherit",
+            fontWeight: "bold",
           }}
         >
           Trash2Treasure
         </Typography>
 
-        <Box sx={{ flexGrow: 1, display: 'flex', gap: 2 }}>
+        <Box sx={{ flexGrow: 1, display: "flex", gap: 2 }}>
           <Button color="inherit" component={Link} to="/reports">
             Reports
           </Button>
@@ -55,7 +55,7 @@ const Navbar = () => {
           </Button>
         </Box>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           {user ? (
             <>
               <Chip
@@ -67,7 +67,7 @@ const Navbar = () => {
                 color="inherit"
                 startIcon={<AddCircleIcon />}
                 component={Link}
-                to="/create-report"
+                to="https://asch3vvggkesv4v5gzf6nk.streamlit.app/"
               >
                 Report
               </Button>
