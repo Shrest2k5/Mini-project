@@ -8,6 +8,7 @@ import {
   EmojiEvents as EmojiEventsIcon,
 } from "@mui/icons-material";
 import { useAuth } from "../contexts/AuthContext";
+import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -65,11 +66,11 @@ const Navbar = () => {
               />
               <Button
                 color="inherit"
-                startIcon={<AddCircleIcon />}
+                startIcon={<RestoreFromTrashIcon />}
                 component={Link}
                 to="https://asch3vvggkesv4v5gzf6nk.streamlit.app/"
               >
-                Report
+                Detect Waste
               </Button>
               <Button
                 color="inherit"
