@@ -156,7 +156,7 @@ const Reports = () => {
                   <Typography variant="body2" color="text.secondary" paragraph>
                     {report.description || 'No description provided'}
                   </Typography>
-                  <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 1 }}>
+                  {/* <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 1 }}>
                     {report.wasteClassifications?.slice(0, 3).map((item, idx) => (
                       <Chip
                         key={idx}
@@ -165,7 +165,7 @@ const Reports = () => {
                         variant="outlined"
                       />
                     ))}
-                  </Box>
+                  </Box> */}
                   <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
                     <LocationOnIcon fontSize="small" color="action" sx={{ mr: 0.5 }} />
                     <Typography variant="caption" color="text.secondary">

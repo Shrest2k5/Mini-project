@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   Container,
   Typography,
@@ -15,16 +15,17 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-} from '@mui/material';
+} from "@mui/material";
 import {
   LocationOn as LocationOnIcon,
   CheckCircle as CheckCircleIcon,
   CleanHands as CleanHandsIcon,
   PhotoCamera as PhotoCameraIcon,
   ArrowBack as ArrowBackIcon,
-} from '@mui/icons-material';
-import { useAuth } from '../contexts/AuthContext';
-import { reportsAPI } from '../services/api';
+} from "@mui/icons-material";
+import { useAuth } from "../contexts/AuthContext";
+import { reportsAPI } from "../services/api";
+import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 
 const ReportDetail = () => {
   const { id } = useParams();
@@ -32,7 +33,7 @@ const ReportDetail = () => {
   const { user } = useAuth();
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [cleanupDialogOpen, setCleanupDialogOpen] = useState(false);
   const [cleanupImage, setCleanupImage] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -46,7 +47,7 @@ const ReportDetail = () => {
       const response = await reportsAPI.getById(id);
       setReport(response.data);
     } catch (error) {
-      setError('Failed to load report');
+      setError("Failed to load report");
     } finally {
       setLoading(false);
     }
@@ -54,7 +55,7 @@ const ReportDetail = () => {
 
   const handleClaim = async () => {
     if (!user) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
@@ -62,36 +63,36 @@ const ReportDetail = () => {
       await reportsAPI.claim(id, user.id);
       loadReport();
     } catch (error) {
-      setError(error.response?.data?.error || 'Failed to claim report');
+      setError(error.response?.data?.error || "Failed to claim report");
     }
   };
 
   const handleCleanupSubmit = async () => {
     if (!cleanupImage) {
-      setError('Please upload a cleanup image');
+      setError("Please upload a cleanup image");
       return;
     }
 
     setSubmitting(true);
-    setError('');
+    setError("");
 
     try {
       const formData = new FormData();
-      formData.append('image', cleanupImage);
-      formData.append('userId', user.id);
+      formData.append("image", cleanupImage);
+      formData.append("userId", user.id);
 
       const response = await reportsAPI.submitCleanup(id, formData);
       setCleanupDialogOpen(false);
       setCleanupImage(null);
       loadReport();
-      
+
       if (response.data.verification.verified) {
-        alert('Cleanup verified! You earned 50 points!');
+        alert("Cleanup verified! You earned 50 points!");
       } else {
         alert(response.data.message);
       }
     } catch (error) {
-      setError(error.response?.data?.error || 'Failed to submit cleanup');
+      setError(error.response?.data?.error || "Failed to submit cleanup");
     } finally {
       setSubmitting(false);
     }
@@ -99,17 +100,17 @@ const ReportDetail = () => {
 
   const getStatusColor = (status) => {
     const colors = {
-      reported: 'warning',
-      claimed: 'info',
-      cleaned: 'primary',
-      verified: 'success',
+      reported: "warning",
+      claimed: "info",
+      cleaned: "primary",
+      verified: "success",
     };
-    return colors[status] || 'default';
+    return colors[status] || "default";
   };
 
   if (loading) {
     return (
-      <Container maxWidth="lg" sx={{ py: 4, textAlign: 'center' }}>
+      <Container maxWidth="lg" sx={{ py: 4, textAlign: "center" }}>
         <CircularProgress />
       </Container>
     );
@@ -123,22 +124,24 @@ const ReportDetail = () => {
     );
   }
 
-  const canClaim = report.status === 'reported' && user;
-  const canCleanup = (report.status === 'claimed' || report.status === 'reported') && 
-                     user && report.claimedBy === user.id;
+  const canClaim = report.status === "reported" && user;
+  const canCleanup =
+    (report.status === "claimed" || report.status === "reported") &&
+    user &&
+    report.claimedBy === user.id;
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Button
         startIcon={<ArrowBackIcon />}
-        onClick={() => navigate('/reports')}
+        onClick={() => navigate("/reports")}
         sx={{ mb: 3 }}
       >
         Back to Reports
       </Button>
 
       {error && (
-        <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError('')}>
+        <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError("")}>
           {error}
         </Alert>
       )}
@@ -146,13 +149,15 @@ const ReportDetail = () => {
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
           <Paper sx={{ p: 3, mb: 3 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+            <Box
+              sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
+            >
               <Chip
                 label={report.status.toUpperCase()}
                 color={getStatusColor(report.status)}
                 size="large"
               />
-              {report.status === 'verified' && (
+              {report.status === "verified" && (
                 <CheckCircleIcon color="success" sx={{ fontSize: 32 }} />
               )}
             </Box>
@@ -161,7 +166,7 @@ const ReportDetail = () => {
               {report.address}
             </Typography>
 
-            <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box sx={{ mb: 2, display: "flex", alignItems: "center", gap: 1 }}>
               <LocationOnIcon color="action" />
               <Typography variant="body2" color="text.secondary">
                 {report.latitude.toFixed(6)}, {report.longitude.toFixed(6)}
@@ -178,7 +183,7 @@ const ReportDetail = () => {
               <Typography variant="h6" gutterBottom>
                 Waste Classifications
               </Typography>
-              <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+              {/* <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                 {report.wasteClassifications?.map((item, idx) => (
                   <Chip
                     key={idx}
@@ -186,14 +191,22 @@ const ReportDetail = () => {
                     variant="outlined"
                   />
                 ))}
-              </Box>
+              </Box> */}
+              <Button
+                color="inherit"
+                startIcon={<RestoreFromTrashIcon />}
+                component={Link}
+                to="https://asch3vvggkesv4v5gzf6nk.streamlit.app/"
+              >
+                Detect Waste
+              </Button>
             </Box>
 
             <Box sx={{ mb: 3 }}>
               <img
                 src={`http://localhost:5000${report.imageUrl}`}
                 alt="Garbage site"
-                style={{ width: '100%', borderRadius: 8 }}
+                style={{ width: "100%", borderRadius: 8 }}
               />
             </Box>
 
@@ -208,7 +221,7 @@ const ReportDetail = () => {
                       <img
                         src={`http://localhost:5000${img}`}
                         alt={`Cleanup ${idx + 1}`}
-                        style={{ width: '100%', borderRadius: 8 }}
+                        style={{ width: "100%", borderRadius: 8 }}
                       />
                     </Grid>
                   ))}
@@ -260,13 +273,18 @@ const ReportDetail = () => {
       </Grid>
 
       {/* Cleanup Dialog */}
-      <Dialog open={cleanupDialogOpen} onClose={() => setCleanupDialogOpen(false)} maxWidth="sm" fullWidth>
+      <Dialog
+        open={cleanupDialogOpen}
+        onClose={() => setCleanupDialogOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>Submit Cleanup Verification</DialogTitle>
         <DialogContent>
           <Box sx={{ mt: 2 }}>
             <input
               accept="image/*"
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
               id="cleanup-upload"
               type="file"
               onChange={(e) => setCleanupImage(e.target.files[0])}
@@ -279,18 +297,19 @@ const ReportDetail = () => {
                 fullWidth
                 sx={{ py: 2, mb: 2 }}
               >
-                {cleanupImage ? cleanupImage.name : 'Upload Cleanup Image'}
+                {cleanupImage ? cleanupImage.name : "Upload Cleanup Image"}
               </Button>
             </label>
             {cleanupImage && (
               <img
                 src={URL.createObjectURL(cleanupImage)}
                 alt="Cleanup preview"
-                style={{ width: '100%', borderRadius: 8 }}
+                style={{ width: "100%", borderRadius: 8 }}
               />
             )}
             <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
-              Upload a photo showing the cleaned area. Our AI will verify it matches the original report.
+              Upload a photo showing the cleaned area. Our AI will verify it
+              matches the original report.
             </Typography>
           </Box>
         </DialogContent>
@@ -301,7 +320,7 @@ const ReportDetail = () => {
             variant="contained"
             disabled={!cleanupImage || submitting}
           >
-            {submitting ? <CircularProgress size={24} /> : 'Submit'}
+            {submitting ? <CircularProgress size={24} /> : "Submit"}
           </Button>
         </DialogActions>
       </Dialog>
